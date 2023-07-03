@@ -1,2 +1,2 @@
 # web-calculator-tool
-A simple web calculation tool
+A simple web calculation tool - written with love in python
