@@ -1,0 +1,16 @@
+{
+  "name": "red-dwarf-web-calculator",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A fast, private and installable scientific calculator.",
+  "scripts": {
+    "test": "node --test",
+    "check": "node scripts/check-project.js",
+    "verify": "npm run test && npm run check",
+    "serve": "npx --yes serve ."
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#140506">
+  <meta name="description" content="Red Dwarf is a fast, private and installable scientific calculator.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles.css">
+  <title>Red Dwarf — Web Calculator</title>
+</head>
+<body>
+  <div class="space" aria-hidden="true">
+    <div class="starfield starfield-a"></div>
+    <div class="starfield starfield-b"></div>
+    <div class="red-dwarf"><span></span></div>
+    <div class="orbit orbit-one"></div>
+    <div class="orbit orbit-two"></div>
+  </div>
+
+  <header class="mission-bar">
+    <a class="brand" href="#calculator" aria-label="Red Dwarf calculator home">
+      <svg viewBox="0 0 48 48" role="img" aria-hidden="true">
+        <circle cx="24" cy="24" r="9" fill="currentColor"/>
+        <circle cx="24" cy="24" r="15" fill="none" stroke="currentColor" stroke-opacity=".35"/>
+        <path d="M4 27c11-8 29-10 40-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <span><b>RED DWARF</b><small>CALC / ORBIT</small></span>
+    </a>
+    <div class="telemetry" aria-label="Application status">
+      <span class="signal-dot"></span>
+      <span>SYSTEM NOMINAL</span>
+      <span class="telemetry-value" id="telemetryClock">00:00:00</span>
+    </div>
+    <nav class="header-actions" aria-label="Application controls">
+      <button class="ghost-button" id="installButton" type="button" hidden>Install app</button>
+      <button class="icon-button" id="settingsButton" type="button" aria-label="Open settings" title="Settings">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.6a3.4 3.4 0 1 0 0 6.8 3.4 3.4 0 0 0 0-6.8Zm8 3.4-.1-1.3 2-1.6-2-3.4-2.5 1a8 8 0 0 0-2.2-1.3L14.8 3h-4l-.4 2.4a8 8 0 0 0-2.2 1.3l-2.4-1-2 3.4 1.9 1.6a9 9 0 0 0 0 2.6l-2 1.6 2 3.4 2.5-1a8 8 0 0 0 2.2 1.3l.4 2.4h4l.4-2.4a8 8 0 0 0 2.2-1.3l2.4 1 2-3.4-1.9-1.6.1-1.3Z"/></svg>
+      </button>
+      <button class="icon-button" id="helpButton" type="button" aria-label="Open help" title="Help">?</button>
+    </nav>
+  </header>
+
+  <main id="calculator" class="workspace">
+    <section class="calculator-shell" aria-label="Scientific calculator">
+      <div class="shell-topline">
+        <span>RD–01 // COMPUTATION CORE</span>
+        <div class="mode-switch" aria-label="Angle mode">
+          <button type="button" data-angle="DEG" class="active">DEG</button>
+          <button type="button" data-angle="RAD">RAD</button>
+        </div>
+      </div>
+
+      <div class="display" aria-live="polite">
+        <div class="display-meta">
+          <span id="memoryIndicator">MEMORY EMPTY</span>
+          <span id="expressionStatus">READY</span>
+        </div>
+        <div class="expression" id="expression" aria-label="Current expression">0</div>
+        <div class="result-row">
+          <span class="equals">=</span>
+          <output id="result" class="result" aria-label="Result">0</output>
+        </div>
+        <div class="display-grid" aria-hidden="true"></div>
+      </div>
+
+      <div class="memory-strip" aria-label="Memory controls">
+        <button type="button" data-action="memory-clear">MC</button>
+        <button type="button" data-action="memory-recall">MR</button>
+        <button type="button" data-action="memory-add">M+</button>
+        <button type="button" data-action="memory-subtract">M−</button>
+        <button type="button" data-action="answer">ANS</button>
+      </div>
+
+      <div class="keypad">
+        <div class="scientific-keys" aria-label="Scientific functions">
+          <button type="button" data-insert="sin(" class="key function">sin</button>
+          <button type="button" data-insert="cos(" class="key function">cos</button>
+          <button type="button" data-insert="tan(" class="key function">tan</button>
+          <button type="button" data-insert="asin(" class="key function shift-label" data-alt="sin⁻¹">asin</button>
+          <button type="button" data-insert="acos(" class="key function shift-label" data-alt="cos⁻¹">acos</button>
+          <button type="button" data-insert="atan(" class="key function shift-label" data-alt="tan⁻¹">atan</button>
+          <button type="button" data-insert="ln(" class="key function">ln</button>
+          <button type="button" data-insert="log(" class="key function">log</button>
+          <button type="button" data-insert="sqrt(" class="key function">√</button>
+          <button type="button" data-insert="π" class="key function">π</button>
+          <button type="button" data-insert="e" class="key function">e</button>
+          <button type="button" data-insert="^" class="key function">xʸ</button>
+          <button type="button" data-insert="(" class="key function">(</button>
+          <button type="button" data-insert=")" class="key function">)</button>
+          <button type="button" data-insert="!" class="key function">x!</button>
+        </div>
+
+        <div class="number-keys" aria-label="Calculator keypad">
+          <button type="button" data-action="clear" class="key command">AC</button>
+          <button type="button" data-action="backspace" class="key command" aria-label="Backspace">DEL</button>
+          <button type="button" data-insert="%" class="key operator">%</button>
+          <button type="button" data-insert="÷" class="key operator" aria-label="Divide">÷</button>
+          <button type="button" data-insert="7" class="key digit">7</button>
+          <button type="button" data-insert="8" class="key digit">8</button>
+          <button type="button" data-insert="9" class="key digit">9</button>
+          <button type="button" data-insert="×" class="key operator" aria-label="Multiply">×</button>
+          <button type="button" data-insert="4" class="key digit">4</button>
+          <button type="button" data-insert="5" class="key digit">5</button>
+          <button type="button" data-insert="6" class="key digit">6</button>
+          <button type="button" data-insert="−" class="key operator" aria-label="Subtract">−</button>
+          <button type="button" data-insert="1" class="key digit">1</button>
+          <button type="button" data-insert="2" class="key digit">2</button>
+          <button type="button" data-insert="3" class="key digit">3</button>
+          <button type="button" data-insert="+" class="key operator" aria-label="Add">+</button>
+          <button type="button" data-action="sign" class="key digit">+/−</button>
+          <button type="button" data-insert="0" class="key digit">0</button>
+          <button type="button" data-insert="." class="key digit">.</button>
+          <button type="button" data-action="calculate" class="key execute" aria-label="Calculate">=</button>
+        </div>
+      </div>
+    </section>
+
+    <aside class="history-panel" aria-label="Calculation history">
+      <div class="panel-heading">
+        <div><span class="eyebrow">FLIGHT RECORDER</span><h2>History</h2></div>
+        <button type="button" class="text-button" id="clearHistory">Clear</button>
+      </div>
+      <div class="history-list" id="historyList"></div>
+      <div class="history-empty" id="historyEmpty">
+        <div class="empty-orbit" aria-hidden="true"><span></span></div>
+        <p>No calculations yet.</p>
+        <small>Your recent results stay on this device.</small>
+      </div>
+      <div class="privacy-note"><span>●</span> LOCAL STORAGE · ZERO TELEMETRY</div>
+    </aside>
+  </main>
+
+  <footer class="status-bar">
+    <span><kbd>Enter</kbd> calculate</span><span><kbd>Esc</kbd> clear</span><span><kbd>⌫</kbd> delete</span>
+    <span class="transmission">THOR // TRANSMISSION STABLE BEYOND PLUTO</span>
+  </footer>
+
+  <dialog id="settingsDialog">
+    <form method="dialog" class="modal-card">
+      <div class="modal-heading"><div><span class="eyebrow">CONTROL DECK</span><h2>Settings</h2></div><button value="cancel" class="icon-button" aria-label="Close">×</button></div>
+      <label class="setting-row"><span><b>Decimal precision</b><small>Maximum digits shown in results</small></span><select id="precisionSetting"><option>6</option><option>8</option><option selected>10</option><option>12</option><option>14</option></select></label>
+      <label class="setting-row"><span><b>Button feedback</b><small>Subtle sound and vibration where supported</small></span><input id="feedbackSetting" type="checkbox" role="switch" checked></label>
+      <label class="setting-row"><span><b>Reduced motion</b><small>Stop orbital and stellar animation</small></span><input id="motionSetting" type="checkbox" role="switch"></label>
+      <button class="primary-button" value="save">Save configuration</button>
+    </form>
+  </dialog>
+
+  <dialog id="helpDialog">
+    <form method="dialog" class="modal-card help-card">
+      <div class="modal-heading"><div><span class="eyebrow">MISSION MANUAL</span><h2>Red Dwarf guide</h2></div><button value="cancel" class="icon-button" aria-label="Close">×</button></div>
+      <div class="help-grid">
+        <section><b>Type naturally</b><p>Use the keypad or your keyboard. Expressions such as <code>2π + sqrt(81)</code> work directly.</p></section>
+        <section><b>Scientific functions</b><p>Trigonometry follows the selected DEG/RAD mode. Powers, logarithms, factorial and percentages are supported.</p></section>
+        <section><b>Private by design</b><p>History, memory and preferences remain in this browser. No account or network request is used for calculations.</p></section>
+        <section><b>Install and go offline</b><p>Install Red Dwarf from the header or browser menu. The application works after the signal disappears.</p></section>
+      </div>
+      <button class="primary-button" value="close">Return to orbit</button>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

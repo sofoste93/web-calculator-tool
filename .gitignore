@@ -1,0 +1,28 @@
+# Dependencies and build output
+node_modules/
+dist/
+coverage/
+.nyc_output/
+.visual/
+
+# Local servers and caches
+.cache/
+.parcel-cache/
+.vite/
+*.log
+
+# Editors
+.idea/
+.vscode/
+*.iml
+*.swp
+
+# Environment and local configuration
+.env
+.env.*
+!.env.example
+
+# Operating system files
+.DS_Store
+Thumbs.db
+Desktop.ini

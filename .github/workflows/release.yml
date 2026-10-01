@@ -1,0 +1,53 @@
+name: Publish release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Verify application
+        run: npm run verify
+      - name: Create offline bundles
+        run: |
+          mkdir -p package/red-dwarf/assets
+          cp index.html styles.css app.js engine.js sw.js manifest.webmanifest LICENSE README.md package/red-dwarf/
+          cp assets/* package/red-dwarf/assets/
+          cd package
+          zip -r ../red-dwarf-web-calculator-${GITHUB_REF_NAME}.zip red-dwarf
+          tar -czf ../red-dwarf-web-calculator-${GITHUB_REF_NAME}.tar.gz red-dwarf
+          cd ..
+          sha256sum red-dwarf-web-calculator-* > SHA256SUMS.txt
+      - name: Publish GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Red Dwarf 1.0.0 · First Light
+          body: |
+            ## First light from the Red Dwarf 🔴
+
+            The project has moved from a one-line idea to a complete, private and installable scientific calculator.
+
+            ### Mission systems
+            - Safe scientific calculation engine
+            - History, memory and DEG/RAD modes
+            - Responsive keyboard-first interface
+            - Offline PWA installation
+            - No account, tracking or runtime dependency
+
+            Launch the live app: https://sofoste93.github.io/web-calculator-tool/
+
+            The ZIP and TAR.GZ contain the standalone static application. Extract either archive and serve the folder with any web server.
+          files: |
+            red-dwarf-web-calculator-*.zip
+            red-dwarf-web-calculator-*.tar.gz
+            SHA256SUMS.txt
+          fail_on_unmatched_files: true
